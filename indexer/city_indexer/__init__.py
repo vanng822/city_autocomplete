@@ -52,7 +52,7 @@ def index_name_suggestion(data):
     payload['name'] = data['name']
     payload['longitude'] = data['longitude']
     payload['latitude'] = data['latitude']
-    
+
     index_data = {}
     index_data['name'] = data['name']
     index_data['suggest'] = {
@@ -61,7 +61,6 @@ def index_name_suggestion(data):
                              "payload": payload
                              }
     es = get_es()
-    es.index('city_names', 'geonames', index_data)
-    
-    
-    
+    es.index('city_names', 'name', index_data)
+
+

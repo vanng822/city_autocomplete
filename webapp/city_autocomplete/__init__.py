@@ -14,18 +14,22 @@ def search():
     search_term = request.args.get('search_term')
     if search_term:
         try:
-            search_query = {"text": search_term,
-                            "completion": {
-                                "field": app.config['SEARCH_FIELD']
-                            }
+            search_query = {"name":
+                                {
+                                    "text": search_term,
+                                    "completion": {
+                                        "field": "suggest"
+                                    }
+                                }
                             }
             results = g.es.suggest(body=search_query,
                                    index=app.config['INDEX_NAME'])
+            options = results["name"][0]["options"]
         except Exception as e:
             print e
             return jsonify({'status': 'ERROR'})
         result_data = {'status': 'SUCCESS',
-                       'results': results}
+                       'results': options}
         return jsonify(result_data)
     else:
         return jsonify({})
@@ -34,7 +38,7 @@ def search():
 @app.before_request
 def before_request():
     try:
-        g.es = Elasticsearch(app.config['ELASTIC_SEARCH'])
+        g.es = Elasticsearch()
     except Exception as e:
         print e
         return jsonify({'status': 'ERROR'})
