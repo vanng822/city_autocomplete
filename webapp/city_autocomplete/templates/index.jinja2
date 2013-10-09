@@ -75,7 +75,7 @@ addMarker(51.3, 0.7, "London", "GB");
 		        success: function(data) {
 		                response($.map(data.results, function(item) {
 		                    return {
-		                        label: item.payload.name,
+		                        label: item.payload.name + ', ' + countries[item.payload.country_code],
 		                        payload : item.payload
 		                   };
 		            }));
@@ -84,16 +84,15 @@ addMarker(51.3, 0.7, "London", "GB");
 		},
       minLength: 1,
       select: function( event, ui ) {
-        console.log(ui);
-        var payload = ui.item.payload;
-        
-        addMarker(payload.latitude, payload.longitude, payload.name, payload.country_code);
+        //console.log(ui);
+        var payload = ui.item.payload; 
+        addMarker(payload.latitude, payload.longitude, payload.name, countries[payload.country_code]);
       }
     });
   });
 </script>
 <script>
-
+var countries = {{ countries }};
 </script>
 </body>
 </html>

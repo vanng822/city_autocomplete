@@ -7,7 +7,7 @@ app.config.from_object('city_autocomplete.config')
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('index.jinja2')
+    return render_template('index.jinja2', countries = app.config['COUNTRIES'])
 
 @app.route('/search/', methods=['GET'])
 def search():
