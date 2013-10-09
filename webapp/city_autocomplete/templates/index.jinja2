@@ -15,7 +15,7 @@
 	            <input type="text" name="search_term" id="searchField" class="form-control " placeholder="Search">
 	        </form>
 	    </p>
-	</div>	
+	</div>
 </div>
 <div class="container">
 	<div id="map" style="height: 600px; width: 600px;"></div>
@@ -35,9 +35,7 @@ var marker = null;
 
 function initmap() {
     // set up the map
-    map = new L.Map('map', {
-    	zoom: 18
-    });
+    map = new L.Map('map');
 
     // create the tile layer with correct attribution
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -45,7 +43,7 @@ function initmap() {
     var osm = new L.TileLayer(osmUrl, {maxZoom: 12, attribution: osmAttrib});
 
     // start the map in South-East England
-    map.setView(new L.LatLng(51.3, 0.7), 3);
+    map.setView(new L.LatLng(51.3, 0.7), 5);
     map.addLayer(osm);
 }
 
@@ -59,8 +57,6 @@ function addMarker(lat, lng, city, country) {
 }
 
 initmap();
-
-addMarker(51.3, 0.7, "London", "GB");
 
 </script>
 
@@ -85,7 +81,7 @@ addMarker(51.3, 0.7, "London", "GB");
       minLength: 1,
       select: function( event, ui ) {
         //console.log(ui);
-        var payload = ui.item.payload; 
+        var payload = ui.item.payload;
         addMarker(payload.latitude, payload.longitude, payload.name, countries[payload.country_code]);
       }
     });
