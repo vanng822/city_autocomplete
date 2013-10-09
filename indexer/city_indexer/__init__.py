@@ -60,7 +60,9 @@ def index_name_suggestion(data):
     index_data['suggest'] = {
                              'input': [data['name']],
                              'output': data['name'],
-                             "payload": payload
+                             "payload": payload,
+                             "weight" : data['population']
                              }
     es = get_es()
     es.index(index='city_names', doc_type='name', body=index_data)
+    
