@@ -1,13 +1,16 @@
-from flask import Flask, g, request, jsonify
+from flask import Flask, g, request, jsonify, render_template
 from pyelasticsearch import ElasticSearch
 
 
 app = Flask(__name__)
 app.config.from_object('city_autocomplete.config')
 
-
 @app.route('/', methods=['GET'])
-def get_suggestions():
+def home():
+    return render_template('index.jinja2')
+
+@app.route('/search/', methods=['GET'])
+def search():
     search_term = request.args.get('search_term')
     if search_term:
         try:
