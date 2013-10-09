@@ -1,4 +1,4 @@
-from pyelasticsearch import ElasticSearch
+from elasticsearch import Elasticsearch
 from datetime import datetime
 import threading
 local_data = threading.local()
@@ -29,7 +29,7 @@ def get_es():
     try:
         es = local_data.es
     except:
-        es = ElasticSearch('http://localhost:9200/')
+        es = Elasticsearch()
         local_data.es = es
     #print id(es)
     return es
@@ -52,6 +52,7 @@ def index_name_suggestion(data):
     payload['name'] = data['name']
     payload['longitude'] = data['longitude']
     payload['latitude'] = data['latitude']
+    payload['country_code'] = data['country_code']
     
     index_data = {}
     index_data['name'] = data['name']
@@ -61,7 +62,7 @@ def index_name_suggestion(data):
                              "payload": payload
                              }
     es = get_es()
-    es.index('city_names', 'geonames', index_data)
+    es.index(index='city_names', doc_type='name', body=index_data)
     
     
     
