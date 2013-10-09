@@ -1,0 +1,4 @@
+virtenv .
+source bin/activate
+python setup develop
+python city_indexer/parser.py -f path/to/cities15000.txt -c city_indexer:index_name_suggestion
