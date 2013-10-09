@@ -42,9 +42,14 @@ function initmap() {
     var osmAttrib='Map data © OpenStreetMap contributors';
     var osm = new L.TileLayer(osmUrl, {maxZoom: 12, attribution: osmAttrib});
 
+    var mapboxUrl = 'http://a.tiles.mapbox.com/v3/zwant.map-26j5789s/{z}/{x}/{y}.png';
+    var mapboxAttrib='Map data © Mapbox';
+    var mapbox = new L.TileLayer(mapboxUrl, {maxZoom: 12, attribution: mapboxAttrib});
+
     // start the map in South-East England
     map.setView(new L.LatLng(51.3, 0.7), 5);
-    map.addLayer(osm);
+    //map.addLayer(osm);
+    map.addLayer(mapbox);
 }
 
 function addMarker(lat, lng, city, country) {
