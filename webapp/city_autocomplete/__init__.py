@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request, redirect, url_for, jsonify, abort
+from flask import Flask, g, request, jsonify
 from pyelasticsearch import ElasticSearch
 
 
@@ -11,7 +11,9 @@ def get_suggestions():
     search_term = request.args.get('search_term')
     if search_term:
         try:
-            results = g.es.search('city:{search_term}'.format(search_term=search_term), index='cities')
+            results = g.es.search('{field}:{term}'.format(field=app.config['SEARCH_FIELD'],
+                                                          term=search_term),
+                                  index=app.config['INDEX_NAME'])
         except:
             return jsonify({'status': 'ERROR'})
         result_data = {'status': 'SUCCESS',
