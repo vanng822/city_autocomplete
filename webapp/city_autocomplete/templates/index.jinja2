@@ -17,7 +17,12 @@
 	    </p>
 	</div>
 </div>
-<div id="map" style="height: 600px; width: 600px;"></div>
+<div id="map" style="height: 600px; width: 600px; float:left;"></div>
+<div id="mapToggle" style="float:left;">
+<div id="opstreet"  class="btn">Openstreet map</div>
+<div id="mapbox" class="btn">Mapbox</div>
+<div id="bananas" class="btn">Bananas</div>
+</div>
 
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
@@ -30,24 +35,29 @@ var plotlist;
 var plotlayers=[];
 /*single marker*/
 var marker = null;
+var bananasUrl = 'http://a.tiles.mapbox.com/v3/zwant.map-bxm1ldb3/{z}/{x}/{y}.png';
+var bananasAttrib='Map data © Mapbox';
+var bananas = new L.TileLayer(bananasUrl, {maxZoom: 12, attribution: bananasAttrib});
+
+
+var mapboxUrl = 'http://a.tiles.mapbox.com/v3/zwant.map-26j5789s/{z}/{x}/{y}.png';
+var mapboxAttrib='Map data © Mapbox';
+var mapbox = new L.TileLayer(mapboxUrl, {maxZoom: 12, attribution: mapboxAttrib});
+
+// create the tile layer with correct attribution
+var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var osmAttrib='Map data © OpenStreetMap contributors';
+var osm = new L.TileLayer(osmUrl, {maxZoom: 12, attribution: osmAttrib}); 
+
+var current_map_layer = null;
 
 function initmap() {
     // set up the map
     map = new L.Map('map');
-
-    // create the tile layer with correct attribution
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © OpenStreetMap contributors';
-    var osm = new L.TileLayer(osmUrl, {maxZoom: 12, attribution: osmAttrib});
-
-    var mapboxUrl = 'http://a.tiles.mapbox.com/v3/zwant.map-26j5789s/{z}/{x}/{y}.png';
-    var mapboxAttrib='Map data © Mapbox';
-    var mapbox = new L.TileLayer(mapboxUrl, {maxZoom: 12, attribution: mapboxAttrib});
-
     // start the map in South-East England
     map.setView(new L.LatLng(51.3, 0.7), 5);
-    //map.addLayer(osm);
-    map.addLayer(mapbox);
+    map.addLayer(osm);
+    current_map_layer = osm;
 }
 
 function addMarker(lat, lng, city, country) {
@@ -87,6 +97,23 @@ initmap();
         var payload = ui.item.payload;
         addMarker(payload.latitude, payload.longitude, payload.name, countries[payload.country_code]);
       }
+    });
+    $("#opstreet").click(function() {
+   		map.removeLayer(current_map_layer);
+	    map.addLayer(osm);
+	    current_map_layer = osm;
+    });
+    
+    $("#mapbox").click(function() {
+    	map.removeLayer(current_map_layer);
+		map.addLayer(mapbox);
+		current_map_layer = mapbox;
+    });
+    
+    $("#bananas").click(function() {
+    	map.removeLayer(current_map_layer);
+	    map.addLayer(bananas);
+	    current_map_layer = bananas;
     });
   });
 </script>
