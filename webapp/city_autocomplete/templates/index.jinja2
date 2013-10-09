@@ -2,7 +2,8 @@
 <head>
     <title> Search for cities! </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
 </head>
 <body>
 <div class="hero-unit">
@@ -12,9 +13,41 @@
             <input type="text" class="search-query" placeholder="Search">
         </form>
     </p>
+
 </div>
+<div id="map" style="height: 400px; width: 400px;"></div>
 
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+<script>
+var map;
+var ajaxRequest;
+var plotlist;
+var plotlayers=[];
+
+function initmap() {
+    // set up the map
+    map = new L.Map('map');
+
+    // create the tile layer with correct attribution
+    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © OpenStreetMap contributors';
+    var osm = new L.TileLayer(osmUrl, {maxZoom: 12, attribution: osmAttrib});
+
+    // start the map in South-East England
+    map.setView(new L.LatLng(51.3, 0.7), 3);
+    map.addLayer(osm);
+}
+
+function addMarker(lat, lng, city, country) {
+    var marker = L.marker([lat, lng]).addTo(map);
+    marker.bindPopup("<b>"+city+"</b><br>"+country).openPopup();
+}
+
+initmap();
+addMarker(51.3, 0.7, "London", "GB");
+
+</script>
 </body>
 </html>
