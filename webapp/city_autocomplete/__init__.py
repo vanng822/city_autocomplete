@@ -1,5 +1,5 @@
 from flask import Flask, g, request, jsonify, render_template
-from pyelasticsearch import ElasticSearch
+from elasticsearch import Elasticsearch
 
 
 app = Flask(__name__)
@@ -14,10 +14,15 @@ def search():
     search_term = request.args.get('search_term')
     if search_term:
         try:
-            results = g.es.search('{field}:{term}'.format(field=app.config['SEARCH_FIELD'],
-                                                          term=search_term),
-                                  index=app.config['INDEX_NAME'])
-        except:
+            search_query = {"text": search_term,
+                            "completion": {
+                                "field": app.config['SEARCH_FIELD']
+                            }
+                            }
+            results = g.es.suggest(body=search_query,
+                                   index=app.config['INDEX_NAME'])
+        except Exception as e:
+            print e
             return jsonify({'status': 'ERROR'})
         result_data = {'status': 'SUCCESS',
                        'results': results}
@@ -29,8 +34,9 @@ def search():
 @app.before_request
 def before_request():
     try:
-        g.es = ElasticSearch(app.config['ELASTIC_SEARCH'])
-    except:
+        g.es = Elasticsearch(app.config['ELASTIC_SEARCH'])
+    except Exception as e:
+        print e
         return jsonify({'status': 'ERROR'})
 
 if __name__ == '__main__':

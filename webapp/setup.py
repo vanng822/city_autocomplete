@@ -7,5 +7,5 @@ setup(
     packages=['city_autocomplete'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Flask', 'pyelasticsearch']
+    install_requires=['Flask', 'elasticsearch']
 )

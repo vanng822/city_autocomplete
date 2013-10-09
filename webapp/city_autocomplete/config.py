@@ -1,4 +1,4 @@
 ELASTIC_SEARCH = 'http://localhost:9200/'
-INDEX_NAME = 'cities'
-SEARCH_FIELD = 'city'
+INDEX_NAME = 'city_names'
+SEARCH_FIELD = 'name'
 DEBUG = True
