@@ -53,7 +53,8 @@ def index_name_suggestion(data):
     payload['longitude'] = data['longitude']
     payload['latitude'] = data['latitude']
     payload['country_code'] = data['country_code']
-    
+
+
     index_data = {}
     index_data['name'] = data['name']
     index_data['suggest'] = {
@@ -63,6 +64,3 @@ def index_name_suggestion(data):
                              }
     es = get_es()
     es.index(index='city_names', doc_type='name', body=index_data)
-    
-    
-    
